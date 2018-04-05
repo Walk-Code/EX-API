@@ -12,5 +12,11 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\V1'], function ($a
         $api->get('user/{id}', ['as' => 'users.show', 'uses' => 'UserController@show']);
     //});
 
+    $api->post('login','AuthController@login');
+//JWT权限组
+
+
+
+
 
 });

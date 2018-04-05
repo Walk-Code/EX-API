@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Api\V1;
 
 
-use function app\debug;
-use function app\dingo_route;
 use App\Models\User;
+use App\Serializer\ResponseSerializer;
 use App\Transformers\UserTransformer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use function app\dingo_route;
 
 
 class UserController extends BaseController {
@@ -19,13 +19,20 @@ class UserController extends BaseController {
      * @apiGroup user
      * @apiPermission none
      * @apiVersion 0.1.0
-     * @apiParam {Email} email email[unique]
-     * @apiParam {String} password password
-     * @apiParam {String} name name
+     * @apiParam {Email} email 邮箱必填
+     * @apiParam {String} password 密码
+     * @apiParam {String} name 昵称
      * @apiSuccessExample {json} Success-Response:
-     *     Http/1.1 200 OK
+     *     Http/1.1 201 Created
      *     {
-     *         token: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsImlzcyI6Imh0dHA6XC9cL21vYmlsZS5kZWZhcmEuY29tXC9hdXRoXC90b2tlbiIsImlhdCI6IjE0NDU0MjY0MTAiLCJleHAiOiIxNDQ1NjQyNDIxIiwibmJmIjoiMTQ0NTQyNjQyMSIsImp0aSI6Ijk3OTRjMTljYTk1NTdkNDQyYzBiMzk0ZjI2N2QzMTMxIn0.9UPMTxo3_PudxTWldsf4ag0PHq1rK8yO9e5vqdwRZLY
+     *         "data": {
+                "id": 26,
+                "email": "312430882@qq.com",
+                "name": "31243088",
+                "avatar": null,
+                "created_at": "2018-04-05 08:28:13",
+                "updated_at": "2018-04-05 08:28:13"
+                }
      *     }
      * @apiErrorExample {json} Error-Response:
      *    Http/1.1 400 Bad Request
@@ -77,19 +84,42 @@ class UserController extends BaseController {
         // 用户注册成功后发送邮件
         //TODO 通过队列处理邮件发送
 
-        $location = dingo_route('v1','users.show',$user->id);
+        $location = dingo_route('v1', 'users.show', $user->id);
 
-        return $this->response->item($user,new UserTransformer())
-            ->header('Location',$location)
-            ->setStatusCode(201);
+       /* return $this->response->item($user, new UserTransformer())->set
+            //->header('Accept','application/vnd.lumen.v1+json')//相应api 版本号
+            ->header('Location', $location)
+            ->setStatusCode(201,'注册成功，需要验证邮件')
+            ->setMeta(['status_code' => 201,'message' => '注册成功，需要验证邮件']);*/
+        return $this->response->item($user,new UserTransformer(),function ($resource, $fractal){
+            $fractal->setSerializer(new ResponseSerializer());
+        })->header('Location',$location)
+            ->setStatusCode(201,'注册成功，需要验证邮件');
 
 
     }
 
-    public function show($id) {
-        
-    }
-    
-    
+    /**
+     * @api {get} /login 用户登陆(user login)
+     * @apiDescription 用户登陆
+     * @apiGroup User
+     * @apiPermission none
+     * @apiVersion 0.1.0
+     * @apiParam {String} userName 昵称必填
+     * @apiParam {String} password 密码必填且长度必须大于6
+     * @apiSuccessExample {json} Success-Response:
+     *    HTTP/1.1 200 OK
+     *    {
+     *        token: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsImlzcyI6Imh0dHA6XC9cL21vYmlsZS5kZWZhcmEuY29tXC9hdXRoXC90b2tlbiIsImlhdCI6IjE0NDU0MjY0MTAiLCJleHAiOiIxNDQ1NjQyNDIxIiwibmJmIjoiMTQ0NTQyNjQyMSIsImp0aSI6Ijk3OTRjMTljYTk1NTdkNDQyYzBiMzk0ZjI2N2QzMTMxIn0.9UPMTxo3_PudxTWldsf4ag0PHq1rK8yO9e5vqdwRZLY
+     *    }
+     *
+     * @apiErrorExample {json} Error-Response：
+     *    HTTP/1.1 404 Not Found
+     *    {
+
+     *    }
+     *
+     */
+
 
 }
