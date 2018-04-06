@@ -1,18 +1,14 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: jianqi
- * Date: 2018/4/5
- * Time: 22:05
- */
-
 namespace App\Models;
 
 
+use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
-class Authorization {
+
+class Authorization extends Controller {
 
     protected $token;
 
@@ -60,7 +56,7 @@ class Authorization {
     public function getPayload() {
 
         if (!$this->payload) {
-            $this->payload = Auth::setToken($this->setToken())->getPayload();
+            $this->payload = Auth::setToken($this->getToken())->getPayload();
         }
 
         return $this->payload;
@@ -100,7 +96,9 @@ class Authorization {
     }
 
     public function toArray() {
-        
+
+
+
     }
     
     

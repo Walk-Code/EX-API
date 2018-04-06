@@ -2,12 +2,14 @@
 
 namespace App\Transformers;
 
-/*
- *  结果处理类
- */
 use App\Models\User;
 use League\Fractal\TransformerAbstract;
 
+/**
+ * 用户信息结果处理类
+ * Class UserTransformer
+ * @package App\Transformers
+ */
 class UserTransformer extends TransformerAbstract {
 
     protected $authorization;

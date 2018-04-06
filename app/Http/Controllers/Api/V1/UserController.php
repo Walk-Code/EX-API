@@ -99,27 +99,6 @@ class UserController extends BaseController {
 
     }
 
-    /**
-     * @api {get} /login 用户登陆(user login)
-     * @apiDescription 用户登陆
-     * @apiGroup User
-     * @apiPermission none
-     * @apiVersion 0.1.0
-     * @apiParam {String} userName 昵称必填
-     * @apiParam {String} password 密码必填且长度必须大于6
-     * @apiSuccessExample {json} Success-Response:
-     *    HTTP/1.1 200 OK
-     *    {
-     *        token: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsImlzcyI6Imh0dHA6XC9cL21vYmlsZS5kZWZhcmEuY29tXC9hdXRoXC90b2tlbiIsImlhdCI6IjE0NDU0MjY0MTAiLCJleHAiOiIxNDQ1NjQyNDIxIiwibmJmIjoiMTQ0NTQyNjQyMSIsImp0aSI6Ijk3OTRjMTljYTk1NTdkNDQyYzBiMzk0ZjI2N2QzMTMxIn0.9UPMTxo3_PudxTWldsf4ag0PHq1rK8yO9e5vqdwRZLY
-     *    }
-     *
-     * @apiErrorExample {json} Error-Response：
-     *    HTTP/1.1 404 Not Found
-     *    {
-
-     *    }
-     *
-     */
 
 
 }

@@ -15,7 +15,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
 
     //映射字段
     protected $fillable = [
-        'name', 'email'
+        'name', 'email','password'
     ];
 
     //指的模型
