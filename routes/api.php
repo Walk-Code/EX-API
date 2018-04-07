@@ -3,20 +3,18 @@
 $api = app('Dingo\Api\Routing\Router');
 
 $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\V1'], function ($api) {
-    $api->get('test', function () {
-        return 1;
-    });
 
     //$api->group(['prefix' => 'v1'],function ($api) {
-        $api->post('registered', 'UserController@create');
-        $api->get('user/{id}', ['as' => 'users.show', 'uses' => 'UserController@show']);
+    $api->post('registered', 'UserController@create');
+    $api->get('user/{id}', ['as' => 'users.show', 'uses' => 'UserController@show']);
     //});
 
-    $api->post('login','AuthController@login');
+    $api->post('login', 'AuthController@login');
+    $api->post('refresh', 'AuthController@refresh');
 //JWT权限组
-
-
-
+    $api->group(['middleware' => ['ex.refresh','api.auth']], function ($api) {
+        $api->get('test', 'UserController@test');
+    });
 
 
 });

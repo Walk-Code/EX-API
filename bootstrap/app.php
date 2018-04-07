@@ -27,6 +27,7 @@ $app = new Laravel\Lumen\Application(
 
  $app->withEloquent(); //启用查询生成器
 
+ $app->configure('jwt'); //调用jwt配置
 /*
 |--------------------------------------------------------------------------
 | Register Container Bindings
@@ -48,6 +49,8 @@ $app->singleton(
     App\Console\Kernel::class
 );
 
+
+
 /*
 |--------------------------------------------------------------------------
 | Register Middleware
@@ -63,9 +66,10 @@ $app->singleton(
 //    App\Http\Middleware\ExampleMiddleware::class
 // ]);
 
-// $app->routeMiddleware([
-//     'auth' => App\Http\Middleware\Authenticate::class,
-// ]);
+ $app->routeMiddleware([
+     'auth' => App\Http\Middleware\Authenticate::class,
+     'ex.refresh' => App\Http\Middleware\RefreshToken::class
+ ]);
 
 /*
 |--------------------------------------------------------------------------
@@ -84,7 +88,9 @@ $app->singleton(
 $app->register(Dingo\Api\Provider\LumenServiceProvider::class);
 $app->register(Tymon\JWTAuth\Providers\LumenServiceProvider::class);
 
-
+app('Dingo\Api\Auth\Auth')->extend('jwt', function ($app) {
+    return new Dingo\Api\Auth\Provider\JWT($app['Tymon\JWTAuth\JWTAuth']);
+});
 
 /*
 |--------------------------------------------------------------------------

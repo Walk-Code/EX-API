@@ -26,7 +26,7 @@ if (!function_exists('dehub')) {
  * @return string
  */
 
-if (!function_exists('')) {
+if (!function_exists('dingo_route')) {
     function dingo_route($version, $name,$param = []) {
 
         return app('Dingo\Api\Routing\UrlGenerator')

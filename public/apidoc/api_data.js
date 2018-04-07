@@ -49,7 +49,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "app/Http/Controllers/Api/V1/AuthController.php",
+    "filename": "app/Http/Controllers/Api/V1/Auth1Controllerr.php",
     "groupTitle": "Auth",
     "name": "PostLogin"
   },

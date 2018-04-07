@@ -14,13 +14,13 @@ use Illuminate\Support\Facades\Validator;
 class AuthController extends BaseController {
 
     /**
-     * 创建一个新的实例
+     * 过滤
      *
      * @return void
      */
-    public function __construct() {
+   /* public function __construct() {
         $this->middleware('auth:api', ['except' => ['login']]);
-    }
+    }*/
 
     /**
      * @api {post} /login 创建一个token（create a token)
@@ -52,8 +52,8 @@ class AuthController extends BaseController {
     public function login(Request $request) {
 
         $message = [
-            'login.require' => '用户名或者邮箱未填写',
-            'password.requrie' => '用户名密码未填写',
+            'login.required' => '用户名或者邮箱未填写',
+            'password.required' => '用户名密码未填写',
             'password.min' => '密码长度必须大于6位'
         ];
 
@@ -84,4 +84,23 @@ class AuthController extends BaseController {
 
     }
 
+    /**
+     * @api {post} refresh 刷新jwt-token（refresh jwt-token）
+     * @apiDescription 刷新jwt-token （refresh jwt-token）
+     * @apiGroup Auth
+     * @apiPermission JWT
+     * @apiVersion 0.1.0
+     * @apiHeader {String} Authorization 用户旧的jwt-token，value已Bearer开头
+     *
+     */
+
+    public function refresh() {
+
+        $authorization = new Authorization(Auth::refresh());
+
+        return $this->response->item($authorization, new AuthorizationTransformer(), function ($resource, $fractal) {
+            $fractal->setSerializer(new ResponseSerializer());
+        });
+
+    }
 }

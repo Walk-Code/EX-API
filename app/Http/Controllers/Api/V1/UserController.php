@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Serializer\ResponseSerializer;
 use App\Transformers\UserTransformer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use function app\dingo_route;
 
@@ -28,7 +29,7 @@ class UserController extends BaseController {
      *         "data": {
                 "id": 26,
                 "email": "312430882@qq.com",
-                "name": "31243088",
+                "name": "312430882",
                 "avatar": null,
                 "created_at": "2018-04-05 08:28:13",
                 "updated_at": "2018-04-05 08:28:13"
@@ -99,6 +100,9 @@ class UserController extends BaseController {
 
     }
 
+    public function test() {
+       return 1;
 
+    }
 
 }
