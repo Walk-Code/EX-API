@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Models\Authorization;
 use App\Serializer\ResponseSerializer;
 use App\Transformers\AuthorizationTransformer;
+use App\Transformers\NoContentTransformer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -85,13 +86,32 @@ class AuthController extends BaseController {
     }
 
     /**
-     * @api {post} refresh 刷新jwt-token（refresh jwt-token）
-     * @apiDescription 刷新jwt-token （refresh jwt-token）
+     * @api {put} /auth/refresh 刷新token（refresh token）
+     * @apiDescription 刷新jwt-token （refresh token）
      * @apiGroup Auth
      * @apiPermission JWT
      * @apiVersion 0.1.0
-     * @apiHeader {String} Authorization 用户旧的jwt-token，value已Bearer开头
+     * @apiHeader {String} Authorization 用户旧的token，value已Bearer开头
+     * @apiSuccessExample {json} Success-Response:
+     *     Http/1.1 200 Ok
+     *     {
+     *          "message": "success",
+                "data": {
+                    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vd3d3LmFwaWFwcC5jb20vYXBpL3JlZnJlc2giLCJpYXQiOjE1MjMxOTQ2NzgsImV4cCI6MTUyMzE5ODI5OSwibmJmIjoxNTIzMTk0Njk5LCJqdGkiOiJJV24zaDRJNGpwMzhFS2FJIiwic3ViIjozOCwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.XvXqVYQeKh9v2aMXGUlrgScOr1sOQb0P-0nwJyC7qaY",
+                    "expired_at": "2018-04-08 14:38:19",
+                    "refresh_expired_at": "2018-04-22 13:37:58"
+                },
+                "status_code": 200
+     *     }
      *
+     *
+     * @apiErrorExample {json} Error-Response:
+     *      Http/1.1 500 Internal Server Error
+     *      {
+                "message": "The token has been blacklisted",
+                "status_code": 500
+     *
+     *      }
      */
 
     public function refresh() {
@@ -101,6 +121,27 @@ class AuthController extends BaseController {
         return $this->response->item($authorization, new AuthorizationTransformer(), function ($resource, $fractal) {
             $fractal->setSerializer(new ResponseSerializer());
         });
+    }
+
+    /**
+     * @api {delete} /auth/destory 删除当前token （delete current token）
+     * @apiDescription 删除当前token (delete current token)
+     * @apiGroup Auth
+     * @apiPermission jwt
+     * @apiVersion 0.1.0
+     * @apiHeader {String} Authorization 用户当前的token,value已Bearer开头
+     * @apiSuccessExample {json} Success-Response:
+     *      Http/1.1 204 No Content
+     *
+     */
+    public function destory() {
+
+        Auth::logout();
+
+        return $this->response->noContent();
 
     }
+
+
+
 }

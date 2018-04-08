@@ -10,9 +10,11 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\V1'], function ($a
     //});
 
     $api->post('login', 'AuthController@login');
-    $api->post('refresh', 'AuthController@refresh');
+    $api->put('refresh', 'AuthController@refresh');
 //JWT权限组
     $api->group(['middleware' => ['ex.refresh','api.auth']], function ($api) {
+
+        $api->delete('auth/destory','AuthController@destory');
         $api->get('test', 'UserController@test');
     });
 
